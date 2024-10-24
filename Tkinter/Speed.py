@@ -9,15 +9,22 @@ def speedCheck():
 
     # Update button text to indicate that the test is running
     button.config(text="Testing...", state=DISABLED)
+    progress.start()  # Start progress bar
 
     # Run the test in a separate thread to avoid freezing the UI
     def run_speedtest():
         down = str(round(sp.download() / (10 ** 6), 3)) + " Mbps"
         up = str(round(sp.upload() / (10 ** 6), 3)) + " Mbps"
+        
+        # Update the labels with the download and upload speeds
         lab_down.config(text=down)
         lab_up.config(text=up)
+        
+        # Stop the progress bar and reset the button after the test
+        progress.stop()
         button.config(text="Check Speed", state=NORMAL)  # Reset button after test
 
+    # Start the thread to run the speed test
     threading.Thread(target=run_speedtest).start()
 
 # Create the main window
@@ -50,19 +57,9 @@ lab_up.place(x=40, y=340, height=50, width=420)
 progress = ttk.Progressbar(sp, orient=HORIZONTAL, length=300, mode='indeterminate')
 progress.place(x=100, y=420, height=30, width=300)
 
-def start_progress():
-    progress.start()
-
-def stop_progress():
-    progress.stop()
-
-def run_speed_test_with_progress():
-    start_progress()
-    speedCheck()
-    stop_progress()
-
 # Check Speed Button
-button = Button(sp, text="Check Speed", font=("Arial Rounded MT Bold", 22, "bold"), bg="#FF6363", fg="white", command=lambda: run_speed_test_with_progress())
+button = Button(sp, text="Check Speed", font=("Arial Rounded MT Bold", 22, "bold"), bg="#FF6363", fg="white", command=speedCheck)
 button.place(x=40, y=500, height=60, width=420)
 
+# Run the main window loop
 sp.mainloop()
