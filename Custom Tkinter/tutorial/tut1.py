@@ -17,8 +17,23 @@ root.title('Tkinter.com -  Custom Tkinter!')
 root.geometry('600x350')
 
 
+# function
+def hello():
+    lab.configure(text=my_button.cget("text"))
+
+
 # button
-my_button = customtkinter.CTkButton(root,text="Hello Worlf!!")
+my_button = customtkinter.CTkButton(root,
+        text="Hello World!!",
+        command=hello,
+        height=100,
+        width=200
+        )
 my_button.pack(pady =80)
+
+# label
+lab = customtkinter.CTkLabel(root,text="")
+lab.pack(pady=80)
+
 
 root.mainloop()
